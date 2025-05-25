@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  http-api-gateway:
+    build:
+      context: ./http-api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # Exposes the gateway on host port 3000
+    depends_on:
+      - nats
+    environment:
+      - NATS_URL=nats://nats:4222
+      - PORT=3000
+    volumes:
+      - ./http-api-gateway/src:/usr/src/app/src # Optional: for live reload in dev
+    networks:
+      - social_payment_network
+
+  payment-microservice:
+    build:
+      context: ./payment-microservices
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001" # Exposes the payment service on host port 3001
+    depends_on:
+      - nats
+      - mysql_db
+    environment:
+      - NATS_URL=nats://nats:4222
+      - DB_HOST=mysql_db
+      - DB_PORT=3306
+      - DB_USERNAME=root # Replace with your desired username
+      - DB_PASSWORD=your_strong_password # Replace with your desired password
+      - DB_DATABASE=payment_db # Replace with your desired database name
+      - PORT=3001
+    volumes:
+      - ./payment-microservices/src:/usr/src/app/src # Optional: for live reload in dev
+    networks:
+      - social_payment_network
+
+  user-microservice:
+    build:
+      context: ./user-microservices
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002" # Exposes the user service on host port 3002
+    depends_on:
+      - nats
+      - mysql_db
+    environment:
+      - NATS_URL=nats://nats:4222
+      - DB_HOST=mysql_db
+      - DB_PORT=3306
+      - DB_USERNAME=root # Replace with your desired username
+      - DB_PASSWORD=your_strong_password # Replace with your desired password
+      - DB_DATABASE=user_db # Replace with your desired database name
+      - PORT=3002
+    volumes:
+      - ./user-microservices/src:/usr/src/app/src # Optional: for live reload in dev
+    networks:
+      - social_payment_network
+
+  nats:
+    image: nats:2.9-alpine
+    ports:
+      - "4222:4222" # NATS client port
+      - "8222:8222" # NATS monitoring port
+    networks:
+      - social_payment_network
+
+  mysql_db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306" # MySQL port
+    environment:
+      MYSQL_ROOT_PASSWORD: your_strong_password # Replace with your root password
+      MYSQL_DATABASE_PAYMENT: payment_db # Creates 'payment_db' database
+      MYSQL_DATABASE_USER: user_db # Creates 'user_db' database
+      # You can also create specific users and passwords here
+      # MYSQL_USER: myuser
+      # MYSQL_PASSWORD: mypassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - social_payment_network
+
+networks:
+  social_payment_network:
+    driver: bridge
+
+volumes:
+  mysql_data: # Persists MySQL data
