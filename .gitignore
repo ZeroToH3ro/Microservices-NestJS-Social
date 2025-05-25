@@ -1,0 +1,55 @@
+# Node.js and PNPM
+node_modules/
+.pnpm-store/
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
+# NestJS build output
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Docker
+*.dockerignore
+Dockerfile.dev
+docker-compose.override.yml
+
+# Testing and coverage
+coverage/
+*.lcov
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# TypeScript cache
+*.tsbuildinfo
