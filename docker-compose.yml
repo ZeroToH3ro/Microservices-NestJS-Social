@@ -77,7 +77,7 @@ services:
       MYSQL_ROOT_PASSWORD: your_strong_password # Replace with your root password
       MYSQL_DATABASE_PAYMENT: payment_db # Creates 'payment_db' database
       MYSQL_DATABASE_USER: user_db # Creates 'user_db' database
-      # You can also create specific users and passwords here
+      # You can also create specific users and password here
       # MYSQL_USER: myuser
       # MYSQL_PASSWORD: mypassword
     volumes:

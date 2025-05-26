@@ -79,8 +79,7 @@ export class UsersController {
   })
   @ApiResponse({
     status: 200,
-    description:
-      'List of users.' /* type: PaginatedUserResponse (define this) */,
+    description: 'List of users.',
   })
   async getUsers(
     @Query('page') page?: number,
