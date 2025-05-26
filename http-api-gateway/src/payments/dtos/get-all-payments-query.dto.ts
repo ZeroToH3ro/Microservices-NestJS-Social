@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IsInt, IsOptional, Min } from 'class-validator';
 
 export class GetAllPaymentsQueryDto {
   @ApiPropertyOptional({
@@ -19,16 +19,4 @@ export class GetAllPaymentsQueryDto {
   @IsInt()
   @Min(1)
   limit?: number;
-
-  @ApiPropertyOptional({ description: 'Filter by User ID' })
-  @IsOptional()
-  @IsString()
-  userId?: string;
-
-  @ApiPropertyOptional({
-    description: 'Filter by payment status (e.g., pending, completed, failed)',
-  })
-  @IsOptional()
-  @IsString()
-  status?: string;
 }
